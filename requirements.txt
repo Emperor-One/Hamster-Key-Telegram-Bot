@@ -1,0 +1,3 @@
+httpx
+python_telegram_bot
+loguru

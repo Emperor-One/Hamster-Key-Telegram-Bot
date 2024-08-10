@@ -47,6 +47,23 @@ Finally, you can run the bot, and enjoy your keys.
 python bot.py
 ```
 
+## Exclusive Mode
+This bot can be set to exclusive mode meaning you can make it so that only the people you authorize can use
+the bot.
+In order to do this, set the EXCLUSIVE variable in bot.py to True:
+```python
+EXCLUSIVE = True
+```
+Then, add your Telegram User ID to the AUTHORIZED_USERS list:
+```python
+AUTHORIZED_USERS = [
+    <Your User ID>,
+    <Your Friend\'s User ID>
+]
+```
+You can get your User ID values from the console, as they are printed out every time
+someone sends a command to the bot.
+
 ## Environment Variables
 Saving your tokens to environment variables is not necessary (especially if you don't plan to share your code), 
 but it is a recommended practice.
@@ -72,8 +89,9 @@ On **Windows**, run cmd as Administrator and type this command:
 setx %HAMSTER_BOT_TOKEN% <YOUR TOKEN HERE> /M
 ```
 
-## Virtual Envrionemnts
+## Virtual Envrionments
 Python virtual environments are beneficial because they isolate project dependencies, preventing version conflicts and ensuring that each project has a consistent, controlled setup. This makes it easier to manage and deploy multiple projects with different requirements on the same system.
+
 To set it up on **Windows:**
 ```batch
 python -m venv venv

@@ -103,7 +103,7 @@ async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     
     server.logger.info(f"Generating for client: {update.effective_chat.id}")
-    server.logger.info(f"Generating keys for All Games\.")
+    server.logger.info(f"Generating keys for All Games.")
 
     await context.bot.send_message(chat_id=update.effective_chat.id, text="🐹")
     await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Currently generating for all games\.\.\.", parse_mode='MARKDOWNV2')
@@ -112,6 +112,12 @@ async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     no_of_keys = int(context.args[0]) if context.args else 4
     server.logger.info(f"Number of keys set to {no_of_keys}. Context args was {'not empty' if context.args else 'empty'}")
+
+    # This currently overloads the server with login requests
+    # tasks = [bike(update, context), clone(update, context), cube(update, context), train(update, context)]
+    # await asyncio.gather(*tasks)
+
+
     for i in range(4):
         keys = await server.run(chosen_game=i+1, no_of_keys=no_of_keys)
         generated_keys = [f"`{key}`" for key in keys]

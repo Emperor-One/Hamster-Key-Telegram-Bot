@@ -36,7 +36,7 @@ section below.
 
 ---
 
-Once you have saved your token to bot.py or to an , and install the required packages with this command:
+Once you have saved your token to bot.py or to an environment variable, install the required packages with this command:
 ```sh
 pip install -r requirements.txt
 ```

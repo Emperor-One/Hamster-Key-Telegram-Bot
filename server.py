@@ -126,7 +126,7 @@ async def play_the_game(app_token, promo_id):
 
     except Exception as e:
         logger.error(f"Failed to login: {e}")
-        input("Press Any Key To Exit")
+        return None
 
     for _ in range(11):
         try:

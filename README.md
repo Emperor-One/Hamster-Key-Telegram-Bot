@@ -28,7 +28,7 @@ It should look something like this:
 TOKEN_INSECURE = "7461996478:AAG7j04LJ8m6fmXLjarmyiRU9S2AhTg6Lot7iiw"
 ```
 ---
-Warning: It is highly recommended that you do not save your API TOKEN in plain text
+**Warning:** It is highly recommended that you do not save your API TOKEN in plain text
 on the code. If you want to be secure you should save your Token in an environment
 variable named HAMSTER\_BOT\_TOKEN. See the saving your Token in an environment variable
 section below.
@@ -41,10 +41,14 @@ pip install -r requirements.txt
 ```
 
 Optionally, here, you could also run:
-```sh
-pip install venv
+```batch
 python -m venv venv
-./venv/bin/Activate.ps1
+.\venv\Scripts\activate.bat
+```
+On Linux/macOS:
+```sh
+python -m venv venv
+bash -c "source ./venv/bin/activate"
 ```
 But, this is not required. 
 
@@ -55,9 +59,10 @@ python bot.py
 
 ## Environment Variables
 Saving your tokens to environment variables is not necessary (especially if you don't plan to share your code), 
-but it is a recommended practice. 
+but it is a recommended practice.
+
 If you are on windows, open command prompt and type:
-```powershell
+```batch
 setx %HAMSTER_BOT_TOKEN% <YOUR TOKEN HERE>
 ```
 If you are on Linux or macOS, open your terminal and type:
@@ -65,3 +70,14 @@ If you are on Linux or macOS, open your terminal and type:
 export HAMSTER_BOT_TOKEN=<YOUR TOKEN HERE>
 ```
 
+**Note:** After you set the environment variable, you will have to close the current shell, and open a new one
+for the changes to take effect. This change will persist until you reboot your computer
+or log out. You have to run the above command again to reset the environment variable.
+
+To make the environment variable persist after reboots, on **Linux/macOS**, you can add the above command
+to your ~/.bashrc or ~/.zshrc file.
+
+On **Windows**, run cmd as Administrator and type this command:
+```batch
+setx %HAMSTER_BOT_TOKEN% <YOUR TOKEN HERE> /M
+```

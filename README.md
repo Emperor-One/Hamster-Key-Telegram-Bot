@@ -31,6 +31,7 @@ Warning: It is highly recommended that you do not save your API TOKEN in plain t
 on the code. If you want to be secure you should save your Token in an environment
 variable named HAMSTER\_KOMBAT\_TOKEN. See the saving your Token in an environment variable
 section below.
+
 ---
 
 Once you have saved your token to bot.py or to an , and install the required packages with this command:

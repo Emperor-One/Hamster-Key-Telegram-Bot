@@ -128,19 +128,14 @@ async def play_the_game(app_token, promo_id):
         logger.error(f"Failed to login: {e}")
         return None
 
-    for _ in range(11):
-        try:
-            has_code = await register_event(client_token, promo_id)
-        except Exception as e:
-            return None
+    try:
+        has_code = await register_event(client_token, promo_id)
 
-
-        if has_code:
-            break
+    except Exception as e:
+        return None
 
     try:
         key = await create_code(client_token, promo_id)
-        
         return key
 
     except Exception as e:

@@ -29,7 +29,7 @@ TOKEN_INSECURE = "7461996478:AAG7j04LJ8m6fmXLjarmyiRU9S2AhTg6Lot7iiw"
 ```
 ---
 **Warning:** It is highly recommended that you do not save your API TOKEN in plain text
-on the code. If you want to be secure you should save your Token in an environment
+in the code. If you want to be secure you should save your Token in an environment
 variable named HAMSTER\_BOT\_TOKEN. See the [Environment Variables](#environment-variables)
 section below.
 
@@ -58,7 +58,7 @@ Then, add your Telegram User ID to the AUTHORIZED_USERS list:
 ```python
 AUTHORIZED_USERS = [
     <Your User ID>,
-    <Your Friend\'s User ID>
+    <Your Friends User ID>
 ]
 ```
 You can get your User ID values from the console, as they are printed out every time

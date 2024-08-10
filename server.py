@@ -71,6 +71,8 @@ async def register_event(client_token, promo_id):
         "User-Agent": "UnityPlayer/2022.3.20f1 (UnityWebRequest/1.0, libcurl/8.5.0-DEV)",
         "Connection": "close"
     }
+    has_code = False
+
     async with httpx.AsyncClient() as client:
         while True:
             delay_time = EVENTS_DELAY * (random.uniform(0,0.33) + 1)
@@ -85,10 +87,11 @@ async def register_event(client_token, promo_id):
             )
             logger.info(f"Response received: {response.json()}")
 
-            if 'hasCode' in response.json() and has_code:
-                break
+            if 'hasCode' in response.json():
+                has_code = response.json()['hasCode']
 
-        has_code = response.json()['hasCode']
+                if has_code:
+                    break
 
         if has_code:
             logger.success("Code is ready!")

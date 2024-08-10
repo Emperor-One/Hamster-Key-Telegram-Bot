@@ -40,17 +40,7 @@ Once you have saved your token to bot.py or to an environment variable, install 
 pip install -r requirements.txt
 ```
 
-Optionally, here, you could also run:
-```batch
-python -m venv venv
-.\venv\Scripts\activate.bat
-```
-On Linux/macOS:
-```sh
-python -m venv venv
-bash -c "source ./venv/bin/activate"
-```
-But, this is not required. 
+Optionally, here, you could also create a [virtual environment](#virtual-envrionemnts), but it is not required.
 
 Finally, you can run the bot, and enjoy your keys.
 ```sh
@@ -80,4 +70,17 @@ to your ~/.bashrc or ~/.zshrc file.
 On **Windows**, run cmd as Administrator and type this command:
 ```batch
 setx %HAMSTER_BOT_TOKEN% <YOUR TOKEN HERE> /M
+```
+
+## Virtual Envrionemnts
+Python virtual environments are beneficial because they isolate project dependencies, preventing version conflicts and ensuring that each project has a consistent, controlled setup. This makes it easier to manage and deploy multiple projects with different requirements on the same system.
+To set it up on **Windows:**
+```batch
+python -m venv venv
+.\venv\Scripts\activate.bat
+```
+On **Linux/macOS:**
+```sh
+python -m venv venv
+bash -c "source ./venv/bin/activate"
 ```

@@ -30,7 +30,7 @@ TOKEN_INSECURE = "7461996478:AAG7j04LJ8m6fmXLjarmyiRU9S2AhTg6Lot7iiw"
 ---
 **Warning:** It is highly recommended that you do not save your API TOKEN in plain text
 on the code. If you want to be secure you should save your Token in an environment
-variable named HAMSTER\_BOT\_TOKEN. See the saving your Token in an environment variable
+variable named HAMSTER\_BOT\_TOKEN. See the [Environment Variables](#environment-variables)
 section below.
 
 ---

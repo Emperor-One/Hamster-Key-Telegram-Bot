@@ -85,7 +85,7 @@ async def register_event(client_token, promo_id):
             )
             logger.info(f"Response received: {response.json()}")
 
-            if 'hasCode' in response.json():
+            if 'hasCode' in response.json() and has_code:
                 break
 
         has_code = response.json()['hasCode']

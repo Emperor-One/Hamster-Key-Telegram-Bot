@@ -80,10 +80,10 @@ async def train(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False)
     await game_handler(update, context, chosen_game=4, all=all)
 
 async def merge(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=4, all=all)
+    await game_handler(update, context, chosen_game=5, all=all)
 
 async def twerk(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=4, all=all)
+    await game_handler(update, context, chosen_game=6, all=all)
 
 async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if EXCLUSIVE and not update.effective_chat.id in AUTHORIZED_USERS:

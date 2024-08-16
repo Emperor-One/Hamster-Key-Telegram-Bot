@@ -137,7 +137,7 @@ async def play_the_game(app_token, promo_id):
         client_token = await login(client_id, app_token)
 
     except Exception as e:
-        logger.error(f"{client_id} Failed to login: {str(e.with_traceback())}")
+        logger.error(f"{client_id} Failed to login: {str(e)}")
         logger.error(f"{client_id} Failed to login: {e.response.json()}")
         return None
 
@@ -152,7 +152,7 @@ async def play_the_game(app_token, promo_id):
         return key
 
     except Exception as e:
-        logger.error(f"An error occured while trying to create the code: {str(e.with_traceback())} {client_token.split(':')[2]}")
+        logger.error(f"An error occured while trying to create the code: {str(e)} {client_token.split(':')[2]}")
         return None
 
 async def main(chosen_game, no_of_keys):

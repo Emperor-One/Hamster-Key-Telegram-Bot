@@ -37,12 +37,22 @@ GAMES = {
         'name': 'Train Miner',
         'appToken': '82647f43-3f87-402d-88dd-09a90025313f',
         'promoId': 'c4480ac7-e178-4973-8061-9ed5b2e17954',
+    },   
+    5: {
+        'name': 'Merge Away',
+        'appToken': '8d1cc2ad-e097-4b86-90ef-7a27e19fb833',
+        'promoId': 'dc128d28-c45b-411c-98ff-ac7726fbaea4'
+    },
+    6: {
+        'name': 'Twerk Race 3D',
+        'appToken': '61308365-9d16-4040-8bb0-2f4a4c69074c',
+        'promoId': '61308365-9d16-4040-8bb0-2f4a4c69074c'
     }
 }
 
 BASE_URL = 'https://api.gamepromo.io'
 EVENTS_DELAY = 30
-HTTPX_TIMEOUT = 30
+HTTPX_TIMEOUT = 20
 
 key_count = 0
 
@@ -85,18 +95,17 @@ async def register_event(client_token, promo_id):
                 json={'promoId': promo_id, 'eventId': str(uuid.uuid4()), 'eventOrigin': 'undefined'},
                 timeout=httpx.Timeout(HTTPX_TIMEOUT)  
             )
-            logger.info(f"Response received: {response.json()}")
+            logger.info(f"Response received: {response.json()} {client_token.split(':')[2]}")
 
             if 'hasCode' in response.json():
                 has_code = response.json()['hasCode']
 
                 if has_code:
+                    logger.success(f"Code is ready! {client_token.split(':')[2]}")
                     break
+                
+            logger.info(f"Code is not ready. {client_token.split(':')[2]}")
 
-        if has_code:
-            logger.success("Code is ready!")
-        else:
-            logger.info("Code is not ready.")
         return has_code
 
 
@@ -117,7 +126,7 @@ async def create_code(client_token, promo_id):
         response.raise_for_status()
         key = response.json()['promoCode']
 
-        logger.success(f"Key Generated: {key}")
+        logger.success(f"Key Generated: {key} {client_token.split(':')[2]}")
         return key
 
 
@@ -128,7 +137,8 @@ async def play_the_game(app_token, promo_id):
         client_token = await login(client_id, app_token)
 
     except Exception as e:
-        logger.error(f"Failed to login: {e}")
+        logger.error(f"{client_id} Failed to login: {str(e.with_traceback())}")
+        logger.error(f"{client_id} Failed to login: {e.response.json()}")
         return None
 
     try:
@@ -142,7 +152,7 @@ async def play_the_game(app_token, promo_id):
         return key
 
     except Exception as e:
-        logger.error(f"An error occured while trying to create the code: {e}")
+        logger.error(f"An error occured while trying to create the code: {str(e.with_traceback())} {client_token.split(':')[2]}")
         return None
 
 async def main(chosen_game, no_of_keys):

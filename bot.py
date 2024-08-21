@@ -31,7 +31,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="🐹")
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text="The Commands are:\n*/bike*\n*/clone*\n*/cube*\n*/train*\n*/merge*\n*/twerk*\n*/all*\nThese will generate 4 keys for their respective games\.",
+        text="The Commands are:\n*/bike*\n*/clone*\n*/cube*\n*/train*\n*/merge*\n*/twerk*\n*/poly*\n*/all*\nThese will generate 4 keys for their respective games\.",
         parse_mode='MARKDOWNV2'
         )
     await context.bot.send_message(
@@ -85,6 +85,9 @@ async def merge(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False)
 async def twerk(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
     await game_handler(update, context, chosen_game=6, all=all)
 
+async def poly(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
+    await game_handler(update, context, chosen_game=7, all=all)
+
 async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if EXCLUSIVE and not update.effective_chat.id in AUTHORIZED_USERS:
         return
@@ -125,6 +128,9 @@ if __name__ == '__main__':
 
     twerk_handler = CommandHandler('twerk', twerk, block=False)
     application.add_handler(twerk_handler)
+
+    poly_handler = CommandHandler('poly', poly, block=False)
+    application.add_handler(poly_handler)
 
     all_handler = CommandHandler('all', all, block=False)
     application.add_handler(all_handler)

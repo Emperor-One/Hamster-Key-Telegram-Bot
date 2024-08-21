@@ -47,6 +47,11 @@ GAMES = {
         'name': 'Twerk Race 3D',
         'appToken': '61308365-9d16-4040-8bb0-2f4a4c69074c',
         'promoId': '61308365-9d16-4040-8bb0-2f4a4c69074c'
+    },
+    7 : {
+        'name' : 'Polysphere',
+        'appToken' : '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71',
+        'promoId' : '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71'
     }
 }
 
@@ -95,16 +100,16 @@ async def register_event(client_token, promo_id):
                 json={'promoId': promo_id, 'eventId': str(uuid.uuid4()), 'eventOrigin': 'undefined'},
                 timeout=httpx.Timeout(HTTPX_TIMEOUT)  
             )
-            logger.info(f"Response received: {response.json()} {client_token.split(':')[2]}")
+            logger.info(f"Response received: {response.json()} id: {client_token.split(':')[2]}")
 
             if 'hasCode' in response.json():
                 has_code = response.json()['hasCode']
 
                 if has_code:
-                    logger.success(f"Code is ready! {client_token.split(':')[2]}")
+                    logger.success(f"Code is ready! id: {client_token.split(':')[2]}")
                     break
                 
-            logger.info(f"Code is not ready. {client_token.split(':')[2]}")
+            logger.info(f"Code is not ready. id: {client_token.split(':')[2]}")
 
         return has_code
 
@@ -126,7 +131,7 @@ async def create_code(client_token, promo_id):
         response.raise_for_status()
         key = response.json()['promoCode']
 
-        logger.success(f"Key Generated: {key} {client_token.split(':')[2]}")
+        logger.success(f"Key Generated: {key} id: {client_token.split(':')[2]}")
         return key
 
 
@@ -152,7 +157,7 @@ async def play_the_game(app_token, promo_id):
         return key
 
     except Exception as e:
-        logger.error(f"An error occured while trying to create the code: {str(e)} {client_token.split(':')[2]}")
+        logger.error(f"An error occured while trying to create the code: {str(e)} id: {client_token.split(':')[2]}")
         return None
 
 async def main(chosen_game, no_of_keys):

@@ -52,6 +52,11 @@ GAMES = {
         'name' : 'Polysphere',
         'appToken' : '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71',
         'promoId' : '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71'
+    }, 
+    8 : {
+        'name' : 'Mud Racing',
+        'appToken' : '8814a785-97fb-4177-9193-ca4180ff9da8',
+        'promoId' : '8814a785-97fb-4177-9193-ca4180ff9da8'
     }
 }
 
@@ -142,8 +147,8 @@ async def play_the_game(app_token, promo_id):
         client_token = await login(client_id, app_token)
 
     except Exception as e:
-        logger.error(f"{client_id} Failed to login: {str(e)}")
-        logger.error(f"{client_id} Failed to login: {e.response.json()}")
+        logger.error(f"Failed to login: {str(e)} id: {client_id}")
+        logger.error(f"Failed to login: {e.response.json()} id: {client_id} ")
         return None
 
     try:

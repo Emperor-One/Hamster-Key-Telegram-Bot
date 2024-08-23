@@ -31,7 +31,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="🐹")
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text="The Commands are:\n*/bike*\n*/clone*\n*/cube*\n*/train*\n*/merge*\n*/twerk*\n*/poly*\n*/mud*\n*/all*\nThese will generate 4 keys for their respective games\.",
+        text="The Commands are:\n*/bike*\n*/clone*\n*/cube*\n*/train*\n*/merge*\n*/twerk*\n*/poly*\n*/mud*\n*/trim*\n*/all*\nThese will generate 4 keys for their respective games\.",
         parse_mode='MARKDOWNV2'
         )
     await context.bot.send_message(
@@ -91,6 +91,9 @@ async def poly(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
 async def mud(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
     await game_handler(update, context, chosen_game=8, all=all)
 
+async def trim(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
+    await game_handler(update, context, chosen_game=9, all=all)
+
 async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if EXCLUSIVE and not update.effective_chat.id in AUTHORIZED_USERS:
         return
@@ -137,6 +140,9 @@ if __name__ == '__main__':
 
     mud_handler = CommandHandler('mud', mud, block=False)
     application.add_handler(mud_handler)
+
+    trim_handler = CommandHandler('trim', trim, block=False)
+    application.add_handler(trim_handler)
 
     all_handler = CommandHandler('all', all, block=False)
     application.add_handler(all_handler)

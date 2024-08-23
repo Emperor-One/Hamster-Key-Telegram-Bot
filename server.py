@@ -57,6 +57,11 @@ GAMES = {
         'name' : 'Mud Racing',
         'appToken' : '8814a785-97fb-4177-9193-ca4180ff9da8',
         'promoId' : '8814a785-97fb-4177-9193-ca4180ff9da8'
+    },
+    9 : {
+        'name' : 'Mow and Trim',
+        'appToken' : 'ef319a80-949a-492e-8ee0-424fb5fc20a6',
+        'promoId' : 'ef319a80-949a-492e-8ee0-424fb5fc20a6'
     }
 }
 

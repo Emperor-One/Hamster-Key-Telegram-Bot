@@ -82,28 +82,28 @@ async def bike(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
     await game_handler(update, context, chosen_game=1, all=all)
 
 async def cube(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=3, all=all)
+    await game_handler(update, context, chosen_game=2, all=all)
 
 async def train(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=4, all=all)
+    await game_handler(update, context, chosen_game=3, all=all)
 
 async def merge(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=5, all=all)
+    await game_handler(update, context, chosen_game=4, all=all)
 
 async def twerk(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=6, all=all)
+    await game_handler(update, context, chosen_game=5, all=all)
 
 async def poly(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=7, all=all)
+    await game_handler(update, context, chosen_game=6, all=all)
 
 async def mud(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=8, all=all)
+    await game_handler(update, context, chosen_game=7, all=all)
 
 async def trim(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=9, all=all)
+    await game_handler(update, context, chosen_game=8, all=all)
 
 async def cafe(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=10, all=all)
+    await game_handler(update, context, chosen_game=9, all=all)
 
 async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if EXCLUSIVE and not update.effective_chat.id in AUTHORIZED_USERS:
@@ -116,7 +116,7 @@ async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Come Back in about 5\-10 minutes\.", parse_mode='MARKDOWNV2')
 
     # Wait a certain number of seconds between each game
-    tasks = [game_handler(update, context, i + 1, True, i * 30) for i in range(6)]
+    tasks = [game_handler(update, context, i + 1, True, i * 30) for i in range(10)]
     await asyncio.gather(*tasks)
 
 

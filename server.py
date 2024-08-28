@@ -62,6 +62,11 @@ GAMES = {
         'name' : 'Mow and Trim',
         'appToken' : 'ef319a80-949a-492e-8ee0-424fb5fc20a6',
         'promoId' : 'ef319a80-949a-492e-8ee0-424fb5fc20a6'
+    }, 
+    10 : {
+        'name': 'Cafe Dash',
+        'appToken': 'bc0971b8-04df-4e72-8a3e-ec4dc663cd11',
+        'promoId': 'bc0971b8-04df-4e72-8a3e-ec4dc663cd11'
     }
 }
 

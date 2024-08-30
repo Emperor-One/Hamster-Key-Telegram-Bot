@@ -125,13 +125,11 @@ if __name__ == '__main__':
     server.logger.info("Server is running. Awaiting users...")
 
     application.add_handler(CommandHandler('start', start, block=False))
-    application.add_handler(CommandHandler('bike', bike, block=False))
     application.add_handler(CommandHandler('cube', cube, block=False))
     application.add_handler(CommandHandler('train', train, block=False))
     application.add_handler(CommandHandler('merge', merge, block=False))
     application.add_handler(CommandHandler('twerk', twerk, block=False))
     application.add_handler(CommandHandler('poly', poly, block=False))
-    application.add_handler(CommandHandler('mud', mud, block=False))
     application.add_handler(CommandHandler('trim', trim, block=False))
     application.add_handler(CommandHandler('cafe', cafe, block=False))
     application.add_handler(CommandHandler('zoo', zoo, block=False))

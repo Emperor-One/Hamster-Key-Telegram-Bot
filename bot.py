@@ -32,7 +32,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="🐹")
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text="The Commands are:\n*/bike*\n*/cube*\n*/train*\n*/merge*\n*/twerk*\n*/poly*\n*/mud*\n*/trim*\n*/cafe*\n*/all*\nThese will generate 4 keys for their respective games\.",
+        text="The Commands are:\n*/bike*\n*/cube*\n*/train*\n*/merge*\n*/twerk*\n*/poly*\n*/mud*\n*/trim*\n*/cafe*\n*/zoo*\n*/gang*\n*/all*\nThese will generate 4 keys for their respective games\.",
         parse_mode='MARKDOWNV2'
         )
     await context.bot.send_message(
@@ -105,6 +105,12 @@ async def trim(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
 async def cafe(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
     await game_handler(update, context, chosen_game=9, all=all)
 
+async def zoo(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
+    await game_handler(update, context, chosen_game=10, all=all)
+
+async def gang(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
+    await game_handler(update, context, chosen_game=11, all=all)
+
 async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if EXCLUSIVE and not update.effective_chat.id in AUTHORIZED_USERS:
         return
@@ -116,7 +122,7 @@ async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Come Back in about 5\-10 minutes\.", parse_mode='MARKDOWNV2')
 
     # Wait a certain number of seconds between each game
-    tasks = [game_handler(update, context, i + 1, True, i * 30) for i in range(10)]
+    tasks = [game_handler(update, context, i + 1, True, i * 30) for i in range(12)]
     await asyncio.gather(*tasks)
 
 
@@ -134,6 +140,9 @@ if __name__ == '__main__':
     application.add_handler(CommandHandler('mud', mud, block=False))
     application.add_handler(CommandHandler('trim', trim, block=False))
     application.add_handler(CommandHandler('cafe', cafe, block=False))
+    application.add_handler(CommandHandler('zoo', zoo, block=False))
+    application.add_handler(CommandHandler('gang', gang, block=False))
+
     application.add_handler(CommandHandler('all', all, block=False))
 
 

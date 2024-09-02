@@ -96,14 +96,8 @@ async def poly(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
 async def trim(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
     await game_handler(update, context, chosen_game=6, all=all)
 
-async def cafe(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=7, all=all)
-
 async def zoo(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=8, all=all)
-
-async def gang(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
-    await game_handler(update, context, chosen_game=9, all=all)
+    await game_handler(update, context, chosen_game=7, all=all)
 
 async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if EXCLUSIVE and not update.effective_chat.id in AUTHORIZED_USERS:
@@ -116,7 +110,7 @@ async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Come Back in about 5\-10 minutes\.", parse_mode='MARKDOWNV2')
 
     # Wait a certain number of seconds between each game
-    tasks = [game_handler(update, context, i + 1, True, i * 30) for i in range(10)]
+    tasks = [game_handler(update, context, i + 1, True, i * 30) for i in range(8)]
     await asyncio.gather(*tasks)
 
 
@@ -131,9 +125,7 @@ if __name__ == '__main__':
     application.add_handler(CommandHandler('twerk', twerk, block=False))
     application.add_handler(CommandHandler('poly', poly, block=False))
     application.add_handler(CommandHandler('trim', trim, block=False))
-    application.add_handler(CommandHandler('cafe', cafe, block=False))
     application.add_handler(CommandHandler('zoo', zoo, block=False))
-    application.add_handler(CommandHandler('gang', gang, block=False))
 
     application.add_handler(CommandHandler('all', all, block=False))
 

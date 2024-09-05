@@ -23,6 +23,8 @@ requested keys to be generated. This is because the addition of proxies makes re
 volatile. Some keys might generate quicker, and some might be really slow, so this makes sure
 that, at least the generated keys don't just sit on the server, and are sent to the client.
 
+4. New entries requirements.txt that need to be installed using pip. 
+
 
 ## Getting Started
 

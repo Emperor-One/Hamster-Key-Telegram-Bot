@@ -59,8 +59,10 @@ async def game_handler(
         await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Generating\\.\\.\\.", parse_mode='MARKDOWNV2')
         await context.bot.send_message(chat_id=update.effective_chat.id, text=f"This will only take a moment\\.\\.\\.", parse_mode='MARKDOWNV2')
 
-    no_of_keys = int(context.args[0]) if context.args else 4
-    no_of_keys = 8 if chosen_game == 9 else no_of_keys
+    if server.GAMES[chosen_game]['name'] == "Fluff Crusade":
+        no_of_keys = 8
+    else:
+        no_of_keys = int(context.args[0]) if context.args else 4
 
     async for key in server.run(chosen_game=chosen_game, no_of_keys=no_of_keys, use_proxies=USE_PROXIES):
         formatted_key = f"`{key}`"
@@ -128,7 +130,7 @@ if __name__ == '__main__':
     application.add_handler(CommandHandler('zoo', zoo, block=False))
     application.add_handler(CommandHandler('tile', tile, block=False))
     application.add_handler(CommandHandler('fluff', fluff, block=False))
-    application.add_handler(CommandHandler('stone', fluff, block=False))
+    application.add_handler(CommandHandler('stone', stone, block=False))
 
     application.add_handler(CommandHandler('all', all, block=False))
 

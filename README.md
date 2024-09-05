@@ -19,7 +19,7 @@ git clone https://github.com/Emperor-One/Hamster-Key-Telegram-Bot.git
 ```
 You will need to [download](https://www.python.org/downloads/) python if you don't have it on your system.
 
-Next, you will open the bot.py file with your text editor of choice, and copy paste your **API TOKEN** to the following variable:
+Next, you will open the config.py file with your text editor of choice, and copy paste your **API TOKEN** to the following variable:
 ```python
 TOKEN_INSECURE = "<PASTE YOUR TELEGRAM BOT TOKEN  HERE>"
 ```
@@ -35,7 +35,7 @@ section below.
 
 ---
 
-Once you have saved your token to bot.py or to an environment variable, install the required packages with this command:
+Once you have saved your token to config.py or to an environment variable, install the required packages with this command:
 ```sh
 pip install -r requirements.txt
 ```
@@ -47,10 +47,15 @@ Finally, you can run the bot, and enjoy your keys.
 python bot.py
 ```
 
+## Proxies
+
+Proxy support has been added to the bot as of 09-05-2024. Proxies are disabled by default. If you want to enable them you
+need to change `USE_PROXIES=False` in config.py to `USE_PROXIES=True`
+
 ## Exclusive Mode
 This bot can be set to exclusive mode meaning you can make it so that only the people you authorize can use
 the bot.
-In order to do this, set the EXCLUSIVE variable in bot.py to True:
+In order to do this, set the EXCLUSIVE variable in config.py to True:
 ```python
 EXCLUSIVE = True
 ```

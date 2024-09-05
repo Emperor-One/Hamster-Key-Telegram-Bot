@@ -97,7 +97,7 @@ async def is_proxy_valid(proxy, client_id):
         transport = AsyncProxyTransport.from_url(proxy, verify=False)
     else:
         transport = None
-        
+
     async with httpx.AsyncClient(transport=transport) as client:
         try:
             logger.info(f"Checking proxy validity id: {client_id}")
@@ -174,8 +174,7 @@ async def register_event(client_token, promo_id, proxy):
 
     async with httpx.AsyncClient(transport=transport) as client:
         while True:
-            delay_time = EVENTS_DELAY
-            #  * (random.uniform(0,0.33) + 1)
+            delay_time = EVENTS_DELAY * (random.uniform(0,0.33) + 1)
             logger.info(f"Sleeping for {delay_time} seconds.")
             await asyncio.sleep(delay_time)
 

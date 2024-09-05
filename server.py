@@ -265,16 +265,6 @@ async def play_the_game(app_token, promo_id, use_proxies):
             logger.error(f"An error occured while trying to create the code: {str(e)} id: {client_id}")
             continue
 
-# async def main(chosen_game, no_of_keys, use_proxies):
-#     tasks = [play_the_game(GAMES[chosen_game]['appToken'], GAMES[chosen_game]['promoId'], use_proxies) for _ in range(no_of_keys)]
-#     for completed_task in asyncio.as_completed(tasks):
-#         key = await completed_task
-#         yield key
-#     # keys = await asyncio.gather(*tasks)
-#     # return [key for key in keys if key]
-
-
-# Call run directly if you are a bot
 async def run(chosen_game, no_of_keys, use_proxies):
     if no_of_keys == 1:
         logger.info(f"Generating {no_of_keys} key for {GAMES[chosen_game]['name']}")
@@ -285,36 +275,4 @@ async def run(chosen_game, no_of_keys, use_proxies):
     for completed_task in asyncio.as_completed(tasks):
         key = await completed_task
         yield key
-
-    # proxies = []
-    # proxies = await get_proxies()
-    # with open("proxies.txt", "r") as file:
-    #     proxies["latest_proxies"] = [line.strip() for line in file if line.strip()]
-    # keys = await main(chosen_game=chosen_game, no_of_keys=no_of_keys, use_proxies=use_proxies)    
-    # return keys
-
-# if __name__ == "__main__":
-#     print("Select a game:")
-#     for key, value in GAMES.items():
-#         print(f"{key}: {value['name']}")
-#     chosen_game = int(input("Enter the game number: "))
-#     no_of_keys = int(input("Enter the number of keys to generate: "))
-
-#     if no_of_keys == 1:
-#         logger.info(f"Generating {no_of_keys} key for {GAMES[chosen_game]['name']}")
-#     else:
-#         logger.info(f"Generating {no_of_keys} keys for {GAMES[chosen_game]['name']}")
-   
-#     keys = asyncio.run(main(chosen_game, no_of_keys))
-
-#     if keys:
-#         with open('Keys.txt', 'a') as file:  
-#             for key in keys:
-#                 file.write(f"{key}\n")
-#             logger.success("Generated Key(s) were successfully saved to Keys.txt")
-
-#     else:
-#         logger.error("No keys were generated.")    
-
-#     input("Press Any Key To Exit")
 

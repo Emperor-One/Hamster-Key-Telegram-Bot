@@ -8,7 +8,8 @@ Hamster Kombat keys.
 
 ## Update
 
-1. All settings have been moved to **"config.py"**, so now, once you set your token in config.py, 
+1. All settings have been moved to **"config.py.default"**. You should rename this file to
+**"config.py"** before you use the bot. With this change, once you set your token in config.py, 
 you don't have to reset it everytime there is an update to the bot. 
 
 2. Proxies have been added. They are disabled by default, but you can enable them in config.py
@@ -37,7 +38,8 @@ git clone https://github.com/Emperor-One/Hamster-Key-Telegram-Bot.git
 ```
 You will need to [download](https://www.python.org/downloads/) python if you don't have it on your system.
 
-Next, you will open the config.py file with your text editor of choice, and copy paste your **API TOKEN** to the following variable:
+Next, you have to rename config.py.default to config.py, and you will open the config.py file with your text editor of choice.
+Now, copy paste your **API TOKEN** to the following variable:
 ```python
 TOKEN_INSECURE = "<PASTE YOUR TELEGRAM BOT TOKEN  HERE>"
 ```

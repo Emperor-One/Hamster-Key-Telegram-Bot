@@ -5,6 +5,23 @@ Hamster Kombat keys.
 
 ![image](https://github.com/user-attachments/assets/507482c8-e139-437c-ab97-2c7d52123a1c)
 
+## Update
+
+1. All settings have been moved to **"config.py"**, so now, once you set your token in config.py, 
+you don't have to reset it everytime there is an update to the bot. 
+
+2. Proxies have been added. They are disabled by default, but you can enable them in config.py
+by changing `USE_PROXIES = False` to `USE_PROXIES = True`. Free proxies are fetched automatically
+from proxyscrape.com, but if you have your own proxies, you can specify them in **"proxies.txt"**.
+Free proxies are, however, really slow, so I recommend you use paid proxies and put them in
+proxies.txt
+
+3. Keys are now sent to the client immediately as they are generated instead of waiting for all
+requested keys to be generated. This is because the addition of proxies makes requests highly 
+volatile. Some keys might generate quicker, and some might be really slow, so this makes sure
+that, at least the generated keys don't just sit on the server, and are sent to the client.
+
+
 ## Getting Started
 
 The first thing you have to do is go talk to the [BotFather](https://t.me/BotFather) on telegram.

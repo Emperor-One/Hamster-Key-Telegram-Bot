@@ -117,7 +117,7 @@ async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 if __name__ == '__main__':
-    application = ApplicationBuilder().token(TOKEN or TOKEN_INSECURE).build()
+    application = ApplicationBuilder().token(TOKEN).build()
     server.logger.info("Server is running. Awaiting users...")
 
     application.add_handler(CommandHandler('start', start, block=False))

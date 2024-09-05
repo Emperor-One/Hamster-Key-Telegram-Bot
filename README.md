@@ -23,7 +23,7 @@ requested keys to be generated. This is because the addition of proxies makes re
 volatile. Some keys might generate quicker, and some might be really slow, so this makes sure
 that, at least the generated keys don't just sit on the server, and are sent to the client.
 
-4. New entries requirements.txt that need to be installed using pip. 
+4. New entries in requirements.txt that need to be installed using pip. 
 
 
 ## Getting Started
@@ -69,10 +69,22 @@ Finally, you can run the bot, and enjoy your keys.
 python bot.py
 ```
 
+## Stealth
+
+It is important to note that this bot is intended to be used by multiple users at a time, and is not stealthy at all.
+If, however. you are interested in a stealthy and accurate method of generating keys, you should check out this [repo](https://github.com/Emperor-One/StealthyHamster).
+It is much slower than this bot, but you have a smaller chance of being detected as a key generator. It still has flaws, like
+most games are not supported and it needs to support TLS fingerprint spoofing, for example, to be compeletely undetectable, 
+but it completely emulates the supported games in other respects.
+It will be updated, slowly, as I figure out how the keys are actually being generated for each game.
+
 ## Proxies
 
 Proxy support has been added to the bot as of 09-05-2024. Proxies are disabled by default. If you want to enable them you
-need to change `USE_PROXIES=False` in config.py to `USE_PROXIES=True`
+need to change the `USE_PROXIES` variable **config.py** to 
+```python
+USE_PROXIES = True
+```
 
 ## Exclusive Mode
 This bot can be set to exclusive mode meaning you can make it so that only the people you authorize can use

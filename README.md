@@ -3,7 +3,7 @@
 This is a simple telegram bot you can host on your own computer to generate 
 Hamster Kombat keys.
 
-![image](https://github.com/user-attachments/assets/71601f2d-fc42-4588-9888-7d2d86c725a7)
+![image](https://github.com/user-attachments/assets/52d2ef28-9fca-4d34-b927-3d2dc178312f)
 
 
 ## Update

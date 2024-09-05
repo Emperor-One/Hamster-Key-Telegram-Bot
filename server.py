@@ -3,10 +3,11 @@ import os
 import sys
 import httpx
 import random
-import time
 import uuid
 import datetime
+from time import time
 from loguru import logger
+from httpx_socks import AsyncProxyTransport
 
 # Disable logging for httpx
 httpx_log = logger.bind(name="httpx").level("WARNING")
@@ -62,22 +63,90 @@ GAMES = {
         'name': 'Fluff Crusade',
         'appToken': '112887b0-a8af-4eb2-ac63-d82df78283d9',
         'promoId': '112887b0-a8af-4eb2-ac63-d82df78283d9'
+    },
+    10 : {
+        'name': 'Stone Age',
+        'appToken': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af',
+        'promoId': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af'
     }
+
 }
 
 BASE_URL = 'https://api.gamepromo.io'
 EVENTS_DELAY = 30
-HTTPX_TIMEOUT = 20
+HTTPX_TIMEOUT = 45
+PROXY_TIMEOUT = 20
 
-key_count = 0
+async def get_proxies(client_id):
+    async with httpx.AsyncClient() as client:
+        logger.info(f"Fetching Proxies id: {client_id}")
+        proxies_response = await client.get("https://api.proxyscrape.com/v3/free-proxy-list/get?request=displayproxies&proxy_format=protocolipport&format=json&anonymity=Anonymous,Elite&timeout=20000", timeout=20)
+        proxies_data = proxies_response.json()
 
-async def login(client_id, app_token):
+        ACCEPTABLE_LAST_CHECKED_TIME = 600
+        acceptable_proxies = []
+        for proxy in proxies_data['proxies']:
+            if (time() - proxy['last_seen']) <= ACCEPTABLE_LAST_CHECKED_TIME:
+                acceptable_proxies.append(proxy["proxy"])
+
+        return acceptable_proxies
+            
+
+async def is_proxy_valid(proxy, client_id):
+    if proxy is not None:
+        transport = AsyncProxyTransport.from_url(proxy, verify=False)
+    else:
+        transport = None
+        
+    async with httpx.AsyncClient(transport=transport) as client:
+        try:
+            logger.info(f"Checking proxy validity id: {client_id}")
+            response = None
+            response = await client.get(f"{BASE_URL}/promo/login-client", timeout=PROXY_TIMEOUT)
+            logger.info(f"Response Status Code: {response.status_code}")
+            if response.content == b'NOT_FOUND':
+                logger.success(f"Proxy is valid id: {client_id}")
+                logger.info(f"Valid Proxy {proxy}")
+                logger.info(f"Valid response: {response.content}".replace("<","\\<").replace(">","\\>"))
+                return True
+            else:
+                logger.warning(f"Proxy is invalid id:{client_id}")
+                logger.info(f"Invalid Response: {response.content}".replace("<","\\<").replace(">","\\>"))
+                return False
+        except Exception as e:
+            logger.error(f"Proxy is invalid: {e} id: {client_id}")
+            logger.error(f"Invalid proxy: {proxy}")
+            if response is not None:
+                logger.info(f"Invalid Response: {response.content}")
+            return False
+
+async def pick_a_proxy(proxies, client_id):
+    proxy = random.choice(proxies)
+    valid_proxy = ""
+    for _ in range(len(proxies)):
+        is_valid = await is_proxy_valid(proxy, client_id)
+        if not is_valid:
+            proxy = random.choice(proxies)
+        else:
+            valid_proxy = proxy
+            return valid_proxy
+
+    if not valid_proxy:
+        logger.critical("Unlucky! Absolutely no valid proxies. Try again in 5 minutes")
+        return
+
+async def login(client_id, app_token, proxy):
     headers = {
         "User-Agent": "UnityPlayer/2022.3.20f1 (UnityWebRequest/1.0, libcurl/8.5.0-DEV)",
         "Connection": "close"
     }
 
-    async with httpx.AsyncClient() as client:
+    if proxy is not None:
+        transport = AsyncProxyTransport.from_url(proxy, verify=False)
+    else:
+        transport = None
+
+    async with httpx.AsyncClient(transport=transport) as client:
         response = await client.post(
             f'{BASE_URL}/promo/login-client',
             headers=headers,
@@ -90,7 +159,7 @@ async def login(client_id, app_token):
 
         return client_token
 
-async def register_event(client_token, promo_id):
+async def register_event(client_token, promo_id, proxy):
     headers = {
         "Authorization": f"Bearer {client_token}",
         "User-Agent": "UnityPlayer/2022.3.20f1 (UnityWebRequest/1.0, libcurl/8.5.0-DEV)",
@@ -98,17 +167,24 @@ async def register_event(client_token, promo_id):
     }
     has_code = False
 
-    async with httpx.AsyncClient() as client:
+    if proxy is not None:
+        transport = AsyncProxyTransport.from_url(proxy, verify=False)
+    else:
+        transport = None
+
+    async with httpx.AsyncClient(transport=transport) as client:
         while True:
-            delay_time = EVENTS_DELAY * (random.uniform(0,0.33) + 1)
+            delay_time = EVENTS_DELAY
+            #  * (random.uniform(0,0.33) + 1)
             logger.info(f"Sleeping for {delay_time} seconds.")
             await asyncio.sleep(delay_time)
 
+            logger.info(f"Sending register request... id: {client_token.split(':')[2]}")
             response = await client.post(
                 f'{BASE_URL}/promo/register-event',
                 headers=headers,
                 json={'promoId': promo_id, 'eventId': str(uuid.uuid4()), 'eventOrigin': 'undefined'},
-                timeout=httpx.Timeout(HTTPX_TIMEOUT)  
+                timeout=HTTPX_TIMEOUT  
             )
             logger.info(f"Response received: {response.json()} id: {client_token.split(':')[2]}")
 
@@ -116,7 +192,7 @@ async def register_event(client_token, promo_id):
                 has_code = response.json()['hasCode']
 
                 if has_code:
-                    logger.success(f"Code is ready! id: {client_token.split(':')[2]}")
+                    logger.info(f"Code is ready! id: {client_token.split(':')[2]}")
                     break
                 
             logger.info(f"Code is not ready. id: {client_token.split(':')[2]}")
@@ -124,14 +200,19 @@ async def register_event(client_token, promo_id):
         return has_code
 
 
-async def create_code(client_token, promo_id):
+async def create_code(client_token, promo_id, proxy):
     headers = {
         "Authorization": f"Bearer {client_token}",
         "User-Agent": "UnityPlayer/2022.3.20f1 (UnityWebRequest/1.0, libcurl/8.5.0-DEV)",
         "Connection": "close"
     }
 
-    async with httpx.AsyncClient() as client:
+    if proxy is not None:
+        transport = AsyncProxyTransport.from_url(proxy, verify=False)
+    else:
+        transport = None
+
+    async with httpx.AsyncClient(transport=transport) as client:
         response = await client.post(
             f'{BASE_URL}/promo/create-code',
             headers=headers,
@@ -145,69 +226,96 @@ async def create_code(client_token, promo_id):
         return key
 
 
-async def play_the_game(app_token, promo_id):
-    client_id = str(uuid.uuid4())
+async def play_the_game(app_token, promo_id, use_proxies):
+    while True:
+        client_id = str(uuid.uuid4())
+        proxy = None
+        if use_proxies:
+            if os.stat("proxies.txt").st_size != 0:
+                logger.info("Non-empty proxies.txt file found")
+                with open(file_path, 'r') as file:
+                    proxies = [line.strip() for line in file if line.strip()]
+                    proxy = random.choice(proxies)
+            else:
+                proxies = await get_proxies(client_id)
+                proxy = await pick_a_proxy(proxies, client_id)
+                if proxy is None:
+                    continue
+            
+        try:
+            logger.info(f"Sending login request... id: {client_id}")
+            client_token = await login(client_id, app_token, proxy)
 
-    try:
-        client_token = await login(client_id, app_token)
+        except Exception as e:
+            logger.error(f"Failed to login: {e} id: {client_id}")
+            continue
 
-    except Exception as e:
-        logger.error(f"Failed to login: {str(e)} id: {client_id}")
-        logger.error(f"Failed to login: {e.response.json()} id: {client_id} ")
-        return None
+        try:
+            has_code = await register_event(client_token, promo_id, proxy)
 
-    try:
-        has_code = await register_event(client_token, promo_id)
+        except Exception as e:
+            logger.critical(f"Failed to register event: {e}")
+            continue
 
-    except Exception as e:
-        return None
+        try:
+            logger.info(f"Sending create request... id: {client_id}")
+            key = await create_code(client_token, promo_id, proxy)
+            return key
 
-    try:
-        key = await create_code(client_token, promo_id)
-        return key
+        except Exception as e:
+            logger.error(f"An error occured while trying to create the code: {str(e)} id: {client_id}")
+            continue
 
-    except Exception as e:
-        logger.error(f"An error occured while trying to create the code: {str(e)} id: {client_token.split(':')[2]}")
-        return None
-
-async def main(chosen_game, no_of_keys):
-    tasks = [play_the_game(GAMES[chosen_game]['appToken'], GAMES[chosen_game]['promoId']) for _ in range(no_of_keys)]
-    keys = await asyncio.gather(*tasks)
-    return [key for key in keys if key]
+# async def main(chosen_game, no_of_keys, use_proxies):
+#     tasks = [play_the_game(GAMES[chosen_game]['appToken'], GAMES[chosen_game]['promoId'], use_proxies) for _ in range(no_of_keys)]
+#     for completed_task in asyncio.as_completed(tasks):
+#         key = await completed_task
+#         yield key
+#     # keys = await asyncio.gather(*tasks)
+#     # return [key for key in keys if key]
 
 
 # Call run directly if you are a bot
-async def run(chosen_game, no_of_keys):
+async def run(chosen_game, no_of_keys, use_proxies):
     if no_of_keys == 1:
         logger.info(f"Generating {no_of_keys} key for {GAMES[chosen_game]['name']}")
     else:
         logger.info(f"Generating {no_of_keys} keys for {GAMES[chosen_game]['name']}")
 
-    keys = await main(chosen_game=chosen_game, no_of_keys=no_of_keys)    
-    return keys
-    
-if __name__ == "__main__":
-    print("Select a game:")
-    for key, value in GAMES.items():
-        print(f"{key}: {value['name']}")
-    chosen_game = int(input("Enter the game number: "))
-    no_of_keys = int(input("Enter the number of keys to generate: "))
+    tasks = [play_the_game(GAMES[chosen_game]['appToken'], GAMES[chosen_game]['promoId'], use_proxies) for _ in range(no_of_keys)]
+    for completed_task in asyncio.as_completed(tasks):
+        key = await completed_task
+        yield key
 
-    if no_of_keys == 1:
-        logger.info(f"Generating {no_of_keys} key for {GAMES[chosen_game]['name']}")
-    else:
-        logger.info(f"Generating {no_of_keys} keys for {GAMES[chosen_game]['name']}")
+    # proxies = []
+    # proxies = await get_proxies()
+    # with open("proxies.txt", "r") as file:
+    #     proxies["latest_proxies"] = [line.strip() for line in file if line.strip()]
+    # keys = await main(chosen_game=chosen_game, no_of_keys=no_of_keys, use_proxies=use_proxies)    
+    # return keys
+
+# if __name__ == "__main__":
+#     print("Select a game:")
+#     for key, value in GAMES.items():
+#         print(f"{key}: {value['name']}")
+#     chosen_game = int(input("Enter the game number: "))
+#     no_of_keys = int(input("Enter the number of keys to generate: "))
+
+#     if no_of_keys == 1:
+#         logger.info(f"Generating {no_of_keys} key for {GAMES[chosen_game]['name']}")
+#     else:
+#         logger.info(f"Generating {no_of_keys} keys for {GAMES[chosen_game]['name']}")
    
-    keys = asyncio.run(main(chosen_game, no_of_keys))
+#     keys = asyncio.run(main(chosen_game, no_of_keys))
 
-    if keys:
-        with open('Keys.txt', 'a') as file:  
-            for key in keys:
-                file.write(f"{key}\n")
-            logger.success("Generated Key(s) were successfully saved to Keys.txt")
+#     if keys:
+#         with open('Keys.txt', 'a') as file:  
+#             for key in keys:
+#                 file.write(f"{key}\n")
+#             logger.success("Generated Key(s) were successfully saved to Keys.txt")
 
-    else:
-        logger.error("No keys were generated.")    
+#     else:
+#         logger.error("No keys were generated.")    
 
-    input("Press Any Key To Exit")
+#     input("Press Any Key To Exit")
 

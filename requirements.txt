@@ -1,3 +1,5 @@
 httpx
+httpx[socks]
+httpx-socks
 python_telegram_bot
 loguru

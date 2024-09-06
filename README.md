@@ -15,7 +15,7 @@ you don't have to reset it everytime there is an update to the bot.
 2. Proxies have been added. They are disabled by default, but you can enable them in config.py
 by changing `USE_PROXIES = False` to `USE_PROXIES = True`. Free proxies are fetched automatically
 from proxyscrape.com, but if you have your own proxies, you can specify them in **"proxies.txt"**.
-Free proxies are, however, really slow, so I recommend you use paid proxies and put them in
+Free proxies are, however, really unreliable, so I recommend you use paid proxies and put them in
 proxies.txt
 
 3. Keys are now sent to the client immediately as they are generated instead of waiting for all
@@ -74,8 +74,8 @@ python bot.py
 It is important to note that this bot is intended to be used by multiple users at a time, and is not stealthy at all.
 If, however. you are interested in a stealthy and accurate method of generating keys, you should check out this [repo](https://github.com/Emperor-One/StealthyHamster).
 It is much slower than this bot, but you have a smaller chance of being detected as a key generator. It still has flaws, like
-most games are not supported and it needs to support TLS fingerprint spoofing, for example, to be compeletely undetectable, 
-but it completely emulates the supported games in other respects.
+most games are not supported and it needs to support TLS fingerprint spoofing to be fully undetectable, 
+but it completely emulates the supported games in all other aspects.
 It will be updated, slowly, as I figure out how the keys are actually being generated for each game.
 
 ## Proxies
@@ -85,6 +85,8 @@ need to change the `USE_PROXIES` variable **config.py** to
 ```python
 USE_PROXIES = True
 ```
+Free proxies are fetched automatically from proxyscrape.com, but if you have your own proxies, you can specify them in **proxies.txt**. 
+Free proxies are, however, really unreliable, so I recommend you use paid proxies and put them in proxies.txt.
 
 ## Exclusive Mode
 This bot can be set to exclusive mode meaning you can make it so that only the people you authorize can use

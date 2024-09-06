@@ -20,7 +20,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="🐹")
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text="The Commands are:\n*/cube*\n*/train*\n*/merge*\n*/twerk*\n*/poly*\n*/trim*\n*/cafe*\n*/zoo*\n*/tile*\n*/fluff*\n*/stone*\n*/all*\nThese will generate 4 keys for their respective games\\.",
+        text="The Commands are:\n*/cube*\n*/train*\n*/merge*\n*/twerk*\n*/poly*\n*/trim*\n*/cafe*\n*/zoo*\n*/tile*\n*/fluff*\n*/stone*\n*/all*\nThese will generate 4 keys for their respective games\\. /fluff will generate 8 keys\\.",
         parse_mode='MARKDOWNV2'
         )
     await context.bot.send_message(
@@ -63,13 +63,13 @@ async def game_handler(
         no_of_keys = 8
     else:
         no_of_keys = int(context.args[0]) if context.args else 4
-
+    
+    key_count = 0
     async for key in server.run(chosen_game=chosen_game, no_of_keys=no_of_keys, use_proxies=USE_PROXIES):
         formatted_key = f"`{key}`"
-        await context.bot.send_message(chat_id=update.effective_chat.id, text=formatted_key, parse_mode='MARKDOWNV2')
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=f"{key_count + 1}\\. {formatted_key}", parse_mode='MARKDOWNV2')
         server.logger.info(f"Message sent to client: {update.effective_chat.first_name} - {update.effective_chat.username}: {update.effective_chat.id}")
-    # generated_keys = [f"`{key}`" for key in keys]
-    # formatted_keys = '\n'.join(generated_keys)
+        key_count += 1
 
 async def cube(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
     await game_handler(update, context, chosen_game=1, all=all)

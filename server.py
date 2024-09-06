@@ -226,8 +226,8 @@ async def create_code(client_token, promo_id, proxy):
 
 
 async def play_the_game(app_token, promo_id, use_proxies):
+    client_id = str(uuid.uuid4())
     while True:
-        client_id = str(uuid.uuid4())
         proxy = None
         if use_proxies:
             if os.stat("proxies.txt").st_size != 0:
@@ -253,7 +253,7 @@ async def play_the_game(app_token, promo_id, use_proxies):
             has_code = await register_event(client_token, promo_id, proxy)
 
         except Exception as e:
-            logger.critical(f"Failed to register event: {e}")
+            logger.critical(f"Failed to register event: {e} id: {client_id}")
             continue
 
         try:

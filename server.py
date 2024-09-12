@@ -68,6 +68,11 @@ GAMES = {
         'name': 'Stone Age',
         'appToken': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af',
         'promoId': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af'
+    },
+    11: {
+        'name': 'Bouncemasters',
+        'appToken': 'bc72d3b9-8e91-4884-9c33-f72482f0db37',
+        'promoId': 'bc72d3b9-8e91-4884-9c33-f72482f0db37'
     }
 
 }
@@ -253,7 +258,7 @@ async def play_the_game(app_token, promo_id, use_proxies):
             has_code = await register_event(client_token, promo_id, proxy)
 
         except Exception as e:
-            logger.critical(f"Failed to register event: {e} id: {client_id}")
+            logger.error(f"Failed to register event: {e} id: {client_id}")
             continue
 
         try:

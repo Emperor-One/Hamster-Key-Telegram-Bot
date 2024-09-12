@@ -1,4 +1,5 @@
 httpx
+httpx[brotli]
 httpx[socks]
 httpx-socks
 python_telegram_bot

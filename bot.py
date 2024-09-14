@@ -61,8 +61,10 @@ async def game_handler(
         await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Generating\\.\\.\\.", parse_mode='MARKDOWNV2')
         await context.bot.send_message(chat_id=update.effective_chat.id, text=f"This will only take a moment\\.\\.\\.", parse_mode='MARKDOWNV2')
 
-    if server.GAMES[chosen_game]['name'] == "Fluff Crusade":
+    if server.GAMES[chosen_game]['name'] == "Fluff Crusade" and not context.args[0]:
         no_of_keys = 8
+    elif server.GAMES[chosen_game]['name'] == "Fluff Crusade" and context.args[0]:
+        no_of_keys = int(context.args[0])
     else:
         no_of_keys = int(context.args[0]) if context.args else 4
     

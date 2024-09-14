@@ -21,7 +21,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
         text="The Commands are:\n*/cube*\n*/train*\n*/merge*\n*/twerk*\n*/poly*\n*/trim*\n*/cafe*\n*/zoo*\n*/tile*\n"
-            "*/fluff*\n*/stone*\n*/bounce*\n*/all*\nThese will generate 4 keys for their respective games\\. /fluff will generate 8 keys\\.",
+                    "*/fluff*\n*/stone*\n*/bounce*\n*/hide*\n*/all*\nThese will generate 4 keys for their respective"
+                    " games\\. */fluff* will generate 8 keys\\.",
         parse_mode='MARKDOWNV2'
         )
     await context.bot.send_message(
@@ -40,7 +41,7 @@ async def game_handler(
     if EXCLUSIVE and not update.effective_chat.id in AUTHORIZED_USERS:
         await context.bot.send_message(
             chat_id=update.effective_chat.id, 
-            text="Clone this bot from the [github](https://github.com/Emperor-One/Hamster-Key-Telegram-Bot) repo and follow the instructions to create your own bot\\.",
+            text="Clone this bot from the [github](https://github.com/Emperor-One/Hamster-Key-Telegram-Bot) repo and follow the instructions to create your own bot in seconds\\.",
             parse_mode='MARKDOWNV2'
         )
         with open(f'{os.path.dirname(__file__)}/unauthorized','a') as file:
@@ -105,6 +106,9 @@ async def stone(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False)
 async def bounce(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
     await game_handler(update, context, chosen_game=11, all=all)
 
+async def hide(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
+    await game_handler(update, context, chosen_game=12, all=all)
+
 async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if EXCLUSIVE and not update.effective_chat.id in AUTHORIZED_USERS:
         return
@@ -136,6 +140,7 @@ if __name__ == '__main__':
     application.add_handler(CommandHandler('fluff', fluff, block=False))
     application.add_handler(CommandHandler('stone', stone, block=False))
     application.add_handler(CommandHandler('bounce', bounce, block=False))
+    application.add_handler(CommandHandler('hide', hide, block=False))
 
     application.add_handler(CommandHandler('all', all, block=False))
 

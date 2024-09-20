@@ -15,14 +15,14 @@ logging.basicConfig(
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Should make this a Database probably
-    # with open(f'{os.path.dirname(__file__)}/user_ids','a') as file:
-    #     file.write(f"{datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')} {update.effective_chat.first_name}, {update.effective_chat.username}, {update.effective_chat.id}\n")
+    with open(f'{os.path.dirname(__file__)}/user_ids','a') as file:
+        file.write(f"{datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')} {update.effective_chat.first_name}, {update.effective_chat.username}, {update.effective_chat.id}\n")
     await context.bot.send_message(chat_id=update.effective_chat.id, text="🐹")
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
         text="The Commands are:\n*/cube*\n*/train*\n*/merge*\n*/twerk*\n*/poly*\n*/trim*\n*/cafe*\n*/zoo*\n*/tile*\n"
-                    "*/fluff*\n*/stone*\n*/bounce*\n*/hide*\n*/all*\nThese will generate 4 keys for their respective"
-                    " games\\. */fluff* will generate 8 keys\\.",
+                    "*/fluff*\n*/stone*\n*/bounce*\n*/hide*\n*/pin*\n*/count*\n*/infect*\n*/water*\n*/factory*\n*/all*"
+                    "\nThese will generate 4 keys for their respective games\\.",
         parse_mode='MARKDOWNV2'
         )
     await context.bot.send_message(
@@ -61,14 +61,10 @@ async def game_handler(
         await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Generating\\.\\.\\.", parse_mode='MARKDOWNV2')
         await context.bot.send_message(chat_id=update.effective_chat.id, text=f"This will only take a moment\\.\\.\\.", parse_mode='MARKDOWNV2')
 
-    if server.GAMES[chosen_game]['name'] == "Fluff Crusade" and not context.args:
-        no_of_keys = 8
-    elif server.GAMES[chosen_game]['name'] == "Fluff Crusade" and context.args:
-        no_of_keys = int(context.args[0])
-    else:
-        no_of_keys = int(context.args[0]) if context.args else 4
-    
+
     key_count = 0
+    no_of_keys = int(context.args[0]) if context.args else 4
+
     async for key in server.run(chosen_game=chosen_game, no_of_keys=no_of_keys, use_proxies=USE_PROXIES):
         formatted_key = f"`{key}`"
         await context.bot.send_message(chat_id=update.effective_chat.id, text=f"{key_count + 1}\\. {formatted_key}", parse_mode='MARKDOWNV2')
@@ -111,6 +107,21 @@ async def bounce(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False
 async def hide(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
     await game_handler(update, context, chosen_game=12, all=all)
 
+async def pin(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
+    await game_handler(update, context, chosen_game=13, all=all)
+
+async def count(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
+    await game_handler(update, context, chosen_game=14, all=all)
+
+async def infect(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
+    await game_handler(update, context, chosen_game=15, all=all)
+
+async def water(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
+    await game_handler(update, context, chosen_game=16, all=all)
+
+async def factory(update: Update, context: ContextTypes.DEFAULT_TYPE, all = False):
+    await game_handler(update, context, chosen_game=17, all=all)
+
 async def all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if EXCLUSIVE and not update.effective_chat.id in AUTHORIZED_USERS:
         return
@@ -143,6 +154,12 @@ if __name__ == '__main__':
     application.add_handler(CommandHandler('stone', stone, block=False))
     application.add_handler(CommandHandler('bounce', bounce, block=False))
     application.add_handler(CommandHandler('hide', hide, block=False))
+    application.add_handler(CommandHandler('pin', pin, block=False))
+    application.add_handler(CommandHandler('count', count, block=False))
+    application.add_handler(CommandHandler('infect', infect, block=False))
+    application.add_handler(CommandHandler('water', water, block=False))
+    application.add_handler(CommandHandler('factory', factory, block=False))
+
 
     application.add_handler(CommandHandler('all', all, block=False))
 

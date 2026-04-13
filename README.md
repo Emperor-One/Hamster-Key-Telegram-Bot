@@ -1,4 +1,4 @@
-# Hamster-Key-Telegram-Bot
+# ⚠️ Archived:  Keys are longer profitable
 
 This is a simple telegram bot you can host on your own computer to generate 
 Hamster Kombat keys.
